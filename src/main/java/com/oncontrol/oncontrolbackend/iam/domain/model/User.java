@@ -1,5 +1,6 @@
 package com.oncontrol.oncontrolbackend.iam.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.oncontrol.oncontrolbackend.shared.domain.model.AuditableModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User extends AuditableModel implements UserDetails {
 
     @Id

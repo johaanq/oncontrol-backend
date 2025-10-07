@@ -35,6 +35,23 @@ public class JwtService {
         return createToken(claims, user.getEmail());
     }
 
+    /**
+     * Generate JWT token for profiles (doctors and patients)
+     * @param email Profile email
+     * @param profileId Profile ID (DOC-xxx or PAT-xxx)
+     * @param profileType Type of profile (DOCTOR or PATIENT)
+     * @return JWT token
+     */
+    public String generateTokenForProfile(String email, String profileId, String profileType) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", "PROFILE");
+        claims.put("profileType", profileType);
+        claims.put("profileId", profileId);
+        claims.put("email", email);
+        
+        return createToken(claims, email);
+    }
+
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .claims(claims)

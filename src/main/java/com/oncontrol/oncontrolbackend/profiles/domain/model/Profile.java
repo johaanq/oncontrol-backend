@@ -1,5 +1,6 @@
 package com.oncontrol.oncontrolbackend.profiles.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.oncontrol.oncontrolbackend.iam.domain.model.User;
 import com.oncontrol.oncontrolbackend.shared.domain.model.AuditableModel;
 import jakarta.persistence.*;
@@ -8,8 +9,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Profile entity contains common attributes for all profiles (doctors and patients)
@@ -22,7 +28,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Profile extends AuditableModel {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "password"})
+public class Profile extends AuditableModel implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,5 +87,38 @@ public class Profile extends AuditableModel {
 
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    // UserDetails implementation
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Return authorities based on profile type
+        String role = "ROLE_PROFILE_" + profileType.name();
+        return List.of(new SimpleGrantedAuthority(role));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isActive;
     }
 }
