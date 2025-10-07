@@ -312,15 +312,39 @@ Propiedad de OnControl - Sistema de Gestión Oncológica
 
 ---
 
+## 🌱 DataSeeder (Datos de Prueba)
+
+El proyecto incluye un **DataSeeder** que crea datos iniciales automáticamente:
+
+### Datos creados:
+- ✅ 1 Organización (Hospital Central)
+- ✅ 2 Doctores
+- ✅ 4 Pacientes
+- ✅ 5 Citas
+- ✅ 7 Síntomas
+
+### Credenciales de prueba:
+```
+Organización: admin@hospital.com / password123
+Doctor 1: dr.garcia@hospital.com / password123
+Doctor 2: dr.rodriguez@hospital.com / password123
+Paciente 1: juan.perez@email.com / password123
+...
+```
+
+**El seeder se ejecuta automáticamente al iniciar la app con BD vacía.**
+
+Para más información: `src/main/java/.../shared/infrastructure/seeder/README_SEEDER.md`
+
+---
+
 ## 📞 Soporte
 
-Para más información, consulta la documentación en la carpeta raíz:
-- NUEVA_ARQUITECTURA.md
-- DASHBOARDS.md
-- ENDPOINTS_COMPLETOS.md
+Para más información sobre el seeder, consulta:
+- `src/main/java/.../shared/infrastructure/seeder/README_SEEDER.md`
 
 ---
 
 **Versión:** 2.0  
 **Última Actualización:** Octubre 2025  
-**Estado:** ✅ Producción Ready
+**Estado:** ✅ Producción Ready con DataSeeder
