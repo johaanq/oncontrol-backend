@@ -2,7 +2,7 @@ package com.oncontrol.oncontrolbackend.profiles.infrastructure.controller;
 
 import com.oncontrol.oncontrolbackend.appointments.application.service.AppointmentService;
 import com.oncontrol.oncontrolbackend.symptoms.application.service.SymptomService;
-import com.oncontrol.oncontrolbackend.symptoms.domain.model.Symptom;
+import com.oncontrol.oncontrolbackend.symptoms.application.dto.SymptomResponse;
 import com.oncontrol.oncontrolbackend.profiles.domain.model.Profile;
 import com.oncontrol.oncontrolbackend.profiles.domain.repository.ProfileRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,7 +41,7 @@ public class PatientController {
             var appointments = appointmentService.getAppointmentsByPatient(patientProfileId);
             
             // Get recent symptoms (last 30 days)
-            List<Symptom> recentSymptoms = symptomService.getRecentSymptoms(patientProfile, 30);
+            List<SymptomResponse> recentSymptoms = symptomService.getRecentSymptoms(patientProfile, 30);
             
             // Get symptom stats
             Map<String, Object> symptomStats = symptomService.getSymptomStats(patientProfile);

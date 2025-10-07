@@ -5,7 +5,7 @@ import com.oncontrol.oncontrolbackend.profiles.application.dto.PatientProfileRes
 import com.oncontrol.oncontrolbackend.profiles.application.service.ProfileService;
 import com.oncontrol.oncontrolbackend.appointments.application.service.AppointmentService;
 import com.oncontrol.oncontrolbackend.symptoms.application.service.SymptomService;
-import com.oncontrol.oncontrolbackend.symptoms.domain.model.Symptom;
+import com.oncontrol.oncontrolbackend.symptoms.application.dto.SymptomResponse;
 import com.oncontrol.oncontrolbackend.profiles.domain.model.Profile;
 import com.oncontrol.oncontrolbackend.profiles.domain.repository.ProfileRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -111,7 +111,7 @@ public class DoctorController {
             Profile patientProfile = profileRepository.findById(patientId)
                     .orElseThrow(() -> new RuntimeException("Patient profile not found"));
 
-            List<Symptom> symptoms = symptomService.getPatientSymptoms(patientProfile, null, null);
+            List<SymptomResponse> symptoms = symptomService.getPatientSymptoms(patientProfile, null, null);
             
             Map<String, Object> response = new HashMap<>();
             response.put("symptoms", symptoms);

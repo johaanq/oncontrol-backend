@@ -1,8 +1,8 @@
 package com.oncontrol.oncontrolbackend.symptoms.infrastructure.controller;
 
 import com.oncontrol.oncontrolbackend.symptoms.application.dto.SymptomRequest;
+import com.oncontrol.oncontrolbackend.symptoms.application.dto.SymptomResponse;
 import com.oncontrol.oncontrolbackend.symptoms.application.service.SymptomService;
-import com.oncontrol.oncontrolbackend.symptoms.domain.model.Symptom;
 import com.oncontrol.oncontrolbackend.profiles.domain.model.Profile;
 import com.oncontrol.oncontrolbackend.profiles.domain.repository.ProfileRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,11 +37,17 @@ public class SymptomController {
     public ResponseEntity<?> reportSymptom(
             @PathVariable Long patientProfileId,
             @Valid @RequestBody SymptomRequest request) {
+        log.info("🔵 POST /api/symptoms/patient/{} - Request received", patientProfileId);
+        log.info("🔵 Request body: {}", request);
+        
         try {
             Profile patientProfile = profileRepository.findById(patientProfileId)
                     .orElseThrow(() -> new RuntimeException("Patient profile not found"));
+            
+            log.info("✅ Patient profile found: {}", patientProfile.getFullName());
 
-            Symptom symptom = symptomService.reportSymptom(request, patientProfile);
+            SymptomResponse symptom = symptomService.reportSymptom(request, patientProfile);
+            log.info("✅ Symptom created successfully: {}", symptom.getId());
             
             Map<String, Object> response = new HashMap<>();
             response.put("symptom", symptom);
@@ -49,7 +55,7 @@ public class SymptomController {
             
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
-            log.error("Error reporting symptom", e);
+            log.error("❌ Error reporting symptom: {}", e.getMessage(), e);
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("message", "Error reporting symptom: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
@@ -66,7 +72,7 @@ public class SymptomController {
             Profile patientProfile = profileRepository.findById(patientProfileId)
                     .orElseThrow(() -> new RuntimeException("Patient profile not found"));
 
-            List<Symptom> symptoms = symptomService.getPatientSymptoms(patientProfile, startDate, endDate);
+            List<SymptomResponse> symptoms = symptomService.getPatientSymptoms(patientProfile, startDate, endDate);
             
             Map<String, Object> response = new HashMap<>();
             response.put("symptoms", symptoms);
@@ -90,7 +96,7 @@ public class SymptomController {
             Profile patientProfile = profileRepository.findById(patientProfileId)
                     .orElseThrow(() -> new RuntimeException("Patient profile not found"));
 
-            List<Symptom> symptoms = symptomService.getRecentSymptoms(patientProfile, days);
+            List<SymptomResponse> symptoms = symptomService.getRecentSymptoms(patientProfile, days);
             
             Map<String, Object> response = new HashMap<>();
             response.put("symptoms", symptoms);
@@ -124,4 +130,3 @@ public class SymptomController {
         }
     }
 }
-
