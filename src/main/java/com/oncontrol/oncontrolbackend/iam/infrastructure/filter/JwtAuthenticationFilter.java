@@ -41,7 +41,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String userEmail;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            log.warn("⚠️  No Authorization header or invalid format for: {}", requestURI);
+            // Solo registrar warning si NO es una ruta pública
+            if (!isPublicRoute(requestURI)) {
+                log.debug("⚠️  No Authorization header for protected route: {}", requestURI);
+            }
             filterChain.doFilter(request, response);
             return;
         }
@@ -76,5 +79,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         
         filterChain.doFilter(request, response);
+    }
+
+    /**
+     * Verifica si la ruta es pública y no requiere autenticación
+     */
+    private boolean isPublicRoute(String requestURI) {
+        return requestURI.equals("/") ||
+               requestURI.equals("/health") ||
+               requestURI.equals("/favicon.ico") ||
+               requestURI.equals("/error") ||
+               requestURI.startsWith("/api/auth/") ||
+               requestURI.startsWith("/swagger-ui") ||
+               requestURI.startsWith("/api-docs") ||
+               requestURI.startsWith("/api/dashboard/");
     }
 }
