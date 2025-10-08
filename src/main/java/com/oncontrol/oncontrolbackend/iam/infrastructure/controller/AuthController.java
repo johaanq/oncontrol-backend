@@ -38,6 +38,7 @@ public class AuthController {
             String token = jwtService.generateToken(organization);
             
             Map<String, Object> response = new HashMap<>();
+            response.put("type", "ORGANIZATION"); // Frontend needs this to identify user type
             response.put("id", organization.getId());
             response.put("email", organization.getEmail());
             response.put("organizationName", organization.getOrganizationName());
