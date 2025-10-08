@@ -40,7 +40,7 @@ import java.time.LocalTime;
  * 
  * Para DESACTIVAR el seeder, comenta la anotación @Component
  */
-@Component
+//@Component  // ⚠️ DESACTIVADO - No cargar datos de prueba
 @RequiredArgsConstructor
 @Slf4j
 public class DataSeeder implements CommandLineRunner {
