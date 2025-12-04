@@ -25,6 +25,8 @@ public class CreateMedicationRequest {
     @NotBlank(message = "Frequency is required")
     private String frequency;
 
+    private String route; // ORAL, INTRAVENOUS, INTRAMUSCULAR, SUBCUTANEOUS, TOPICAL
+
     private String instructions;
 
     @NotNull(message = "Start date is required")

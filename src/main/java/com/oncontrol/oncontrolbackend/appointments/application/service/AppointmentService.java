@@ -117,6 +117,27 @@ public class AppointmentService {
         return mapToAppointmentResponse(appointment);
     }
 
+    /**
+     * Reschedule an appointment to a new date
+     */
+    public AppointmentResponse rescheduleAppointment(Long id, java.time.LocalDateTime newAppointmentDate, String reason) {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+        log.info("Rescheduling appointment {} from {} to {}", id, appointment.getAppointmentDate(), newAppointmentDate);
+
+        appointment.setAppointmentDate(newAppointmentDate);
+        
+        if (reason != null && !reason.isEmpty()) {
+            String currentNotes = appointment.getNotes();
+            String rescheduleNote = "Reprogramada: " + reason;
+            appointment.setNotes(currentNotes != null ? currentNotes + "\n" + rescheduleNote : rescheduleNote);
+        }
+
+        appointment = appointmentRepository.save(appointment);
+        return mapToAppointmentResponse(appointment);
+    }
+
     private AppointmentResponse mapToAppointmentResponse(Appointment appointment) {
         Profile doctor = appointment.getDoctor();
         Profile patient = appointment.getPatient();

@@ -21,15 +21,17 @@ public class MedicationResponse {
 
     private String patientName;
 
-    private Long prescribedById;
+    private Long doctorId; // Changed from prescribedById
 
-    private String prescribedByName;
+    private String doctorName; // Changed from prescribedByName
 
-    private String medicationName;
+    private String name; // Changed from medicationName
 
     private String dosage;
 
     private String frequency;
+
+    private String route; // ORAL, INTRAVENOUS, INTRAMUSCULAR, SUBCUTANEOUS, TOPICAL
 
     private String instructions;
 

@@ -146,5 +146,36 @@ public class AppointmentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
+
+    @PatchMapping("/{id}/reschedule")
+    @Operation(summary = "Reschedule appointment", description = "Reschedule an appointment to a new date and time")
+    public ResponseEntity<?> rescheduleAppointment(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        try {
+            String newDateStr = body.get("newAppointmentDate");
+            String reason = body.get("reason");
+            
+            if (newDateStr == null || newDateStr.isEmpty()) {
+                Map<String, String> errorResponse = new HashMap<>();
+                errorResponse.put("message", "New appointment date is required");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+            }
+            
+            java.time.LocalDateTime newDate = java.time.LocalDateTime.parse(newDateStr);
+            AppointmentResponse appointment = appointmentService.rescheduleAppointment(id, newDate, reason);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("appointment", appointment);
+            response.put("message", "Appointment rescheduled successfully");
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("Error rescheduling appointment", e);
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "Error rescheduling appointment: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
 }
 

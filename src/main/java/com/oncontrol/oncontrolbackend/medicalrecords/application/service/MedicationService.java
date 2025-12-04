@@ -46,6 +46,7 @@ public class MedicationService {
                 .medicationName(request.getMedicationName())
                 .dosage(request.getDosage())
                 .frequency(request.getFrequency())
+                .route(request.getRoute())
                 .instructions(request.getInstructions())
                 .startDate(request.getStartDate())
                 .endDate(request.getEndDate())
@@ -240,11 +241,12 @@ public class MedicationService {
                 .id(medication.getId())
                 .patientId(medication.getPatient().getId())
                 .patientName(medication.getPatient().getProfile().getFullName())
-                .prescribedById(medication.getPrescribedBy().getId())
-                .prescribedByName(medication.getPrescribedBy().getProfile().getFullName())
-                .medicationName(medication.getMedicationName())
+                .doctorId(medication.getPrescribedBy().getId()) // Changed from prescribedById
+                .doctorName(medication.getPrescribedBy().getProfile().getFullName()) // Changed from prescribedByName
+                .name(medication.getMedicationName()) // Changed from medicationName
                 .dosage(medication.getDosage())
                 .frequency(medication.getFrequency())
+                .route(medication.getRoute())
                 .instructions(medication.getInstructions())
                 .startDate(medication.getStartDate())
                 .endDate(medication.getEndDate())

@@ -43,6 +43,9 @@ public class Medication extends AuditableModel {
     @Column(name = "frequency", nullable = false)
     private String frequency;
 
+    @Column(name = "route")
+    private String route; // ORAL, INTRAVENOUS, INTRAMUSCULAR, SUBCUTANEOUS, TOPICAL
+
     @Column(name = "instructions", columnDefinition = "TEXT")
     private String instructions;
 
